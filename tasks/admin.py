@@ -5,9 +5,9 @@ from .models import Task, Image
 class TaskAdmin(admin.ModelAdmin):
 
     list_display = ('title', 'description', 'priority', 'status')
-    ordering = ('priority')
+    ordering = ('priority',)
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
 
-    list_display = ('images')
+    list_display = ('images',)
