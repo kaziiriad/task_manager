@@ -1,3 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from .models import Task
 
-# Create your views here.
+from django.views.generic import (
+    CreateView,
+    UpdateView,
+    ListView,
+    DeleteView,
+    DetailView
+)
+
+def 
