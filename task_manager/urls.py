@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('tasks.urls')),
     path('', include('accounts_manager.urls')),
+    path('task_api/' include('task_api.urls'))
     
 
 ]
