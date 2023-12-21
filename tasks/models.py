@@ -15,6 +15,7 @@ class Task(models.Model):
         (True, "Completed"),
         (False, "Incomplete")
     ] 
+    
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     description = models.TextField()
@@ -31,10 +32,3 @@ class Task(models.Model):
         ordering = ['created_at', 'due_date', 'priority', 'status']
 
 
-
-class Image(models.Model):
-    belongs_to = models.ForeignKey(Task, related_name='images', on_delete=models.CASCADE)
-    images = models.ImageField(upload_to='task_images/')
-    
-    def __str__(self) -> str:
-        return f'Images for Task: {self.belongs_to.id}'
