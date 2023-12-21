@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+Task Details
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container mt-5">
+    <h1>Task Details</h1>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"> {{ task.title }} </h5>
+            <p class="card-text">Description: {{ task.description }}</p>
+            <p class="card-text">Status: <span class="badge bg-primary">{{ task.get_status_display }}</span></p>
+            <p class="card-text">Priority: <span class="badge bg-danger"> {{ task.get_priority_display }} </span></p>
+            <p class="card-text">Due Date: {{ task.due_date }}</p>
+            <a href="{% url "task-update" task.id %}" class="btn btn-primary">Edit Task</a>
+            <a href="{% url "task-delete" task.id %}" class="btn btn-danger">Delete Task</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

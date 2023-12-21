@@ -12,43 +12,39 @@ Task List
 </div>
 <br>
 <br>
-{% if tasks %}
+{% if task_list %}
 <div class="container card col-md-6 shadow-lg">
   <table class="table">
     <thead>
       <tr>
         <th scope="col">#</th>
         <th scope="col">Title</th>
-        <th scope="col">Description</th>
         <th scope="col">Priority</th>
+        <th scope="col">Due Date</th>
         <th scope="col">Status</th>
       </tr>
     </thead>
     <tbody class="table-group-divider">
-      {% for taks in tasks %}
+      {% for task in task_list %}
       <tr {% if task.status %} class="table-light" {% endif %}>
         <th scope="row">{{ forloop.counter }}</th>
-        <td class="fw-bold">{{ query.title }}</td>
-        <td>{{task.description}}</td>
+        <td class="fw-bold"><a href="{% url "task-detail" task.id %}">{{ task.title }}</a></td>
         <td class="fw-bold">{{ task.get_priority_display }}</td>
         <td>
-          <form method="post" action="{% url 'update-task' task.id %}">
+            {{ task.due_date }}
+            
+          {% comment %} <form method="put" action="{% url 'task-update' task.id %}">
             {% csrf_token %}
             <div class="form-check form-switch">
               <input class="form-check-input" type="checkbox" role="switch" name="status" {% if task.status %} checked
-                {% endif %} onchange="this.form.submit();">
-              <label class="form-check-label">{{ task.get_status_display }}</label>
+              {% endif %}" onchange="this.form.submit()">
+              <label class="form-check-label"></label>
             </div>
-          </form>
+          </form> {% endcomment %}
         </td>
-        {% if task.status%}
         <td>
-          <form method="post" action="{% url 'delete-task' task.id %}">
-            {% csrf_token %}
-            <input type="submit" value="Delete" class="btn btn-primary btn-danger">
-          </form>
+            {{ task.get_status_display }}
         </td>
-        {% endif %}
       </tr>
       {% endfor %}
     </tbody>
@@ -63,5 +59,11 @@ Task List
     <a href="{% url 'task-create' %}" class="btn btn-primary">Create</a>
   </div>
 </div>
+
 {% endif %}
+{% endblock %}
+
+{% block js_block %}
+
+
 {% endblock %}

@@ -30,7 +30,7 @@
         {% endfor %}
         <button type="submit" class="btn btn-primary">Create</button>
       </form> {% endcomment %}
-      <form method="post" class=" p-3" action="{% url 'task-create' %}">
+      <form method="post" class="p-3">
         {% csrf_token %}
         {% for field in form %}
           <div class="mb-3">
