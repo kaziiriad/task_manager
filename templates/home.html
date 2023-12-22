@@ -8,6 +8,10 @@ Home
 <h1 class="text-center p-3">Welcome To Task Manager!</h1>
   <hr />
 
+  {% for message in messages %}
+<div class="alert alert-success" role="alert">{{ message }}</div>
+{% endfor %}
+
   {% if user.is_authenticated %}
     <p class="text-center"> You are logged in as {{ user.first_name }} </p>
   

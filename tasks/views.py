@@ -36,6 +36,9 @@ class TaskListView(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
     context_object_name = 'task_list'
 
+    def get_queryset(self):
+        queryset = Task.objects.filter(user=self.request.user)
+        return queryset
     
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
@@ -49,8 +52,6 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         return reverse_lazy('task-list')
     
     def form_valid(self, form):
-        print('form valid called')
-
         form.instance.user = self.request.user
         form.save()
         return super(TaskCreateView, self).form_valid(form)
@@ -82,6 +83,7 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'task'
     template_name = 'tasks/task_details.html'
     login_url = reverse_lazy('login')
+    
 
 
 
@@ -91,6 +93,10 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
     context_object_name = 'task'
     success_url = reverse_lazy('task-list')
     login_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        messages.success(self.request, "The task was deleted successfully.")
+        return super(TaskDeleteView,self).form_valid(form)
 
 
 

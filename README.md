@@ -15,7 +15,9 @@ cd task_manager/
 2. Edit the ```.env.exmple``` to ```.env```
 
 3. Run with ```docker-compose```
+
 ```bash
-docker-compose up --build
+docker-compose run web python manage.py migrate
+docker-compose up
 ```
 4. Visit ```https://localhost:8000``` to open the app.

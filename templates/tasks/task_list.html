@@ -5,6 +5,11 @@ Task List
 
 {% block content %}
 
+{% for message in messages %}
+<div class="alert alert-success" role="alert">{{ message }}</div>
+{% endfor %}
+
+
 <div class="container p-3 col-md-4 mt-1">
   <h1>
     Welcome to Task List App.
@@ -31,19 +36,19 @@ Task List
         <td class="fw-bold"><a href="{% url "task-detail" task.id %}">{{ task.title }}</a></td>
         <td class="fw-bold">{{ task.get_priority_display }}</td>
         <td>
-            {{ task.due_date }}
-            
+          {{ task.due_date }}
+
           {% comment %} <form method="put" action="{% url 'task-update' task.id %}">
             {% csrf_token %}
             <div class="form-check form-switch">
               <input class="form-check-input" type="checkbox" role="switch" name="status" {% if task.status %} checked
-              {% endif %}" onchange="this.form.submit()">
+                {% endif %}" onchange="this.form.submit()">
               <label class="form-check-label"></label>
             </div>
           </form> {% endcomment %}
         </td>
         <td>
-            {{ task.get_status_display }}
+          {{ task.get_status_display }}
         </td>
       </tr>
       {% endfor %}
