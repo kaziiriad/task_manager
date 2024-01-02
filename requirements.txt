@@ -25,6 +25,7 @@ coreapi==2.3.3
 coreschema==0.0.4
 cryptography==41.0.7
 Django==5.0
+django-cors-headers==4.3.1
 django-crispy-forms==2.1
 django-environ==0.11.2
 django-rest-swagger==2.2.0
@@ -54,6 +55,7 @@ google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.1.0
 googleapis-common-protos==1.62.0
 greenlet==3.0.2
+gunicorn==21.2.0
 h11==0.14.0
 httpagentparser==1.9.5
 httplib2==0.22.0
@@ -86,7 +88,9 @@ Pillow==10.1.0
 portalocker==2.8.2
 protobuf==4.25.1
 psutil==5.9.7
-psycopg2-binary
+psycopg==3.1.12
+psycopg-binary==3.1.12
+psycopg2==2.9.9
 pyasn1==0.5.1
 pyasn1-modules==0.3.0
 pycparser==2.21
@@ -120,6 +124,7 @@ uritemplate==4.1.1
 urllib3==1.26.18
 user-agents==2.2.0
 Werkzeug==2.3.8
+whitenoise==6.6.0
 wsproto==1.2.0
 WTForms==3.1.1
 zipp==3.17.0
