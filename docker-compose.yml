@@ -4,27 +4,26 @@ services:
   db:
     image: postgres
     volumes:
-      - ./data/db:/var/lib/postgres/data
+      - ./data/db:/var/lib/postgres/data/db
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "5431:5432"
+      - "5432:5432"
 
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/app
+
     ports:
       - 8000:8000
-    environment:
-      - SECRET_KEY=${SECRET_KEY}
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
+
+    
+    env_file:
+      - ./.env
     
     depends_on:
       - db
-
