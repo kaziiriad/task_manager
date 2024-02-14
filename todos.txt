@@ -1,0 +1,11 @@
+
+# front-end enhancements
+1. task status complete dynamic transition
+2. create task modal
+3. task detail modal
+
+# back-end enhancements
+1. task assign
+2. accept or reject task assignments
+3. user profile functionality
+4. 
