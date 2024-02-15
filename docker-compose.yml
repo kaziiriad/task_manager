@@ -1,18 +1,7 @@
 version: '3.8'
 
 services:
-  db:
-    image: postgres
-    volumes:
-      - ./data/db:/var/lib/postgres/data/db
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "5432:5423"
-    env_file:
-      - .env
+
   web:
     build: .
     command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
@@ -24,7 +13,19 @@ services:
 
     
     env_file:
-      - ./.env
+      - .env
     
     depends_on:
       - db
+  
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgres/data/db
+    
+    ports:
+      - "5432:5432"
+    
+    env_file:
+      - .env
+
