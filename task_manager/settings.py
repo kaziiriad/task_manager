@@ -169,5 +169,5 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://honest-behavior-production.up.railway.app/'
+    'https://*.railway.app',
 ]

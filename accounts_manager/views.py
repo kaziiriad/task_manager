@@ -9,12 +9,11 @@ def register_request(request):
 		form = NewUserForm(request.POST)
 		if form.is_valid():
 			user = form.save()
-			login(request, user)
 			messages.success(request, "Registration successful." )
-			return redirect("task-list")
+			return redirect("login")
 		messages.error(request, "Unsuccessful registration. Invalid information.")
 	form = NewUserForm()
-	return render (request=request, template_name="accounts/register.html", context={"register_form":form})
+	return render(request=request, template_name="accounts/register.html", context={"register_form":form})
 
 
 
@@ -32,7 +31,7 @@ def login_user(request):
             return redirect('home')
         else:
             messages.info(request, 'Invalid Username or Password')
-            #return render(request, 'accounts/login.html')
+            return render(request, 'accounts/login.html')
 
     return render(request, 'accounts/login.html')
 
