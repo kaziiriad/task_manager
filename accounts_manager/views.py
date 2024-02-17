@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+from django.urls import reverse_lazy
 from .forms import NewUserForm
 
 def register_request(request):
@@ -31,7 +32,7 @@ def login_user(request):
             return redirect('home')
         else:
             messages.info(request, 'Invalid Username or Password')
-            return redirect('login')
+            #return render(request, 'accounts/login.html')
 
     return render(request, 'accounts/login.html')
 
