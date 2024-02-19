@@ -1,7 +1,8 @@
-
 # Task Manager
 
-### A web based task management application based on python's django framework
+### A web based task management application based on python's django framework.
+
+### Project is live [here](https://honest-behavior-production.up.railway.app/)
 
 ## Build Guide
 
@@ -12,7 +13,7 @@ git clone https://github.com/kaziiriad/task_manager.git/
 cd task_manager/
 ```
 
-2. Edit the ```.env.exmple``` to ```.env```
+2. Add variables to the ```.env``` file
 
 3. Run with ```docker-compose```
 

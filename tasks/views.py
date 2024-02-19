@@ -9,25 +9,23 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from django.views.generic import (
+    View,
     ListView,
     CreateView,
     UpdateView,
     DetailView,
-    DeleteView
+    DeleteView,
+    TemplateView
 )
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import CreateTaskForm, UpdateTaskForm
-import logging
 
 
-logger = logging.getLogger(__name__)
-
-def index(request):
-
-    return render(request, 'home.html')
+class HomeView(TemplateView):
+    template_name = 'home.html'
 
 class TaskListView(LoginRequiredMixin, ListView):
 
@@ -73,19 +71,32 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('task-list')
     login_url = reverse_lazy('login')
 
-
     def form_valid(self, form):
         messages.success(self.request, 'Task updated successfully')
         return super(TaskUpdateView, self).form_valid(form)
+
+class TaskStatusUpdateView(LoginRequiredMixin, View):
+
+    def post(self, request):
+
+        task_id = request.POST.get('task_id')
+        status = request.POST.get('status')
+        try:
+            task = Task.objects.get(id=task_id)
+            task.status = True if status == 'completed' else False
+            task.save()
+            return JsonResponse({'success' : True, 'status' : task.get_status_display() })
+        except Task.DoesNotExist:
+            return JsonResponse({'success' : False, 'error': 'Task not found'})
     
+
+
 class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task
     context_object_name = 'task'
     template_name = 'tasks/task_details.html'
     login_url = reverse_lazy('login')
     
-
-
 
 class TaskDeleteView(LoginRequiredMixin, DeleteView):
     
