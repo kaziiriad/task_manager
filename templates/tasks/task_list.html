@@ -41,8 +41,8 @@ Task List
         <td>
 
           <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" value="{{ task.id }}" >
-            <label class="form-check-label" for="task_status_{{ task.id }}" >{{ task.get_status_display }}</label>
+            <input class="form-check-input" type="checkbox" role="switch" id="checkbox-{{ task.id }}" value="{{ task.id }}" {% if task.status %}checked{% endif %} >
+            <label class="form-check-label" id="label-{{ task.id }}" >{{ task.get_status_display }}</label>
 
           </div>
 
@@ -70,6 +70,7 @@ Task List
 <script>
   
   $(document).ready(function() {
+
     $(".form-check-input").change(function() {
 
       var isChecked = $(this).prop('checked');
@@ -87,9 +88,13 @@ Task List
         headers: { 'X-CSRFToken': csrftoken },
         success: function (response) {
           if (response.success) {
-            var labelElement = $('label[for="task_status_' + taskId + '"]');
-
-            console.log(response.status);
+            var labelElement = $('#label-'+taskId);
+            //var checkboxElement = $('#checkbox-'+taskId);
+            
+            labelElement.text(response.status);
+            //checkboxElement.prop('checked');
+            
+            //console.log(checkboxElement);
           }
           else {
             console.error('Error updating task status:', response.error);
