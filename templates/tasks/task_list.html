@@ -19,7 +19,7 @@ Task List
 <br>
 {% if task_list %}
 <div class="container card col-md-6 shadow-lg">
-  <table class="table">
+  <table class="table ">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -29,24 +29,36 @@ Task List
         <th scope="col">Status</th>
       </tr>
     </thead>
-    <tbody class="table-group-divider">
+    <tbody class="">
       {% for task in task_list %}
-      <tr {% if task.status %} class="table-light" {% endif %}>
+
+      <tr class="{% if task.status %} opacity-50 {% endif %}" id="row-{{ task.id }}">
+
         <th scope="row">{{ forloop.counter }}</th>
         <td class="fw-bold"><a href="{% url "task-detail" task.id %}">{{ task.title }}</a></td>
         <td class="fw-bold">{{ task.get_priority_display }}</td>
         <td>
           {{ task.due_date }}
         </td>
+        
         <td>
-
-          <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="checkbox-{{ task.id }}" value="{{ task.id }}" {% if task.status %}checked{% endif %} >
-            <label class="form-check-label" id="label-{{ task.id }}" >{{ task.get_status_display }}</label>
-
+          <div class="form-check">
+            <input type="checkbox" class="btn-check" id="status-check-{{ task.id }}" value="{{ task.id }}" {% if task.status %}checked{% endif %} autocomplete="off">
+            <label class="btn {% if task.status %}btn-success{% endif %}" for="status-check-{{ task.id }}"  id="label-{{ task.id }}">{{ task.get_status_display }}</label>
           </div>
-
         </td>
+
+        <td>
+          {% comment %} <div class="form-check">
+            <input type="checkbox" class="btn-check" id="delete-check-{{ task.id }}" autocomplete="off">
+            <label class="btn btn-danger " for="delete-check-{{ task.id }}">🗑️</label>
+          </div> {% endcomment %}
+          <form method="post" action="{% url 'task-delete' task.id %}">
+            {% csrf_token %}
+            <input type="submit" value="Delete" class="btn btn-primary btn-danger">
+          </form>
+        </td>
+
       </tr>
       {% endfor %}
     </tbody>
@@ -71,40 +83,65 @@ Task List
   
   $(document).ready(function() {
 
-    $(".form-check-input").change(function() {
 
-      var isChecked = $(this).prop('checked');
+    $(".btn-check").click(function() {
+
+      var checkboxId = $(this).attr('id');
+      var csrftoken = getCookie('csrftoken');
       var taskId = $(this).val();
 
-      var data = {
-        'task_id': taskId,
-        'status' : isChecked ? 'completed' : 'incomplete'
-      };
-      var csrftoken = getCookie('csrftoken');
-      $.ajax({
-        url: '{% url 'task-status-update' %}',
-        method: 'POST',
-        data: data,
-        headers: { 'X-CSRFToken': csrftoken },
-        success: function (response) {
-          if (response.success) {
-            var labelElement = $('#label-'+taskId);
-            //var checkboxElement = $('#checkbox-'+taskId);
-            
-            labelElement.text(response.status);
-            //checkboxElement.prop('checked');
-            
-            //console.log(checkboxElement);
-          }
-          else {
-            console.error('Error updating task status:', response.error);
-          }
-        },
-        error: function (xhr, testStatus, errorThrown) {
-          console.error('AJAX Error:', errorThrown);
+      
+      if (checkboxId.startsWith('status-check-')) {
+        var isChecked = $(this).prop('checked');
 
-        }
-    });
+        var data = {
+          'task_id': taskId,
+          'status' : isChecked ? 'completed' : 'incomplete'
+        };
+
+
+        $.ajax({
+          url: '{% url 'task-status-update' %}',
+          method: 'POST',
+          data: data,
+          headers: { 'X-CSRFToken': csrftoken },
+          success: function (response) {
+            if (response.success) {
+              var labelElement = $('#label-'+taskId);
+              var rowElement = $('#row-'+ taskId);
+              //var checkboxElement = $('#checkbox-'+taskId);
+              
+              labelElement.text(response.status);
+              if (response.status === 'Completed') {
+
+                labelElement.addClass('btn-success');
+                rowElement.addClass('opacity-50');
+              
+              } else {
+
+                labelElement.removeClass('btn-success');
+                rowElement.removeClass('opacity-50');
+
+              }
+              //checkboxElement.prop('checked');
+              
+              //console.log(checkboxElement);
+            }
+            else {
+              console.error('Error updating task status:', response.error);
+            }
+          },
+          error: function (xhr, testStatus, errorThrown) {
+            console.error('AJAX Error:', errorThrown);
+
+          }
+      });
+
+      } else if (checkboxId.startsWith('delete-check-')) {
+        // Handle delete checkbox click
+      }
+
+      
   });
 
   function getCookie(name) {
@@ -120,8 +157,8 @@ Task List
         }
     }
     return cookieValue;
-  
-}
+  }
+
 
 });
 
