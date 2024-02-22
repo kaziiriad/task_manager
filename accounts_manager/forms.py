@@ -1,16 +1,60 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
 
 
 # Create your forms here.
 
 class NewUserForm(UserCreationForm):
-	email = forms.EmailField(required=True)
-
+	
+	email = forms.EmailField(
+		required=True,
+		label="Email",
+		widget=forms.EmailInput(attrs={
+			'class' : 'form-control',
+			'placeholder' : 'Email',
+			
+		})
+	)
+	password1 = forms.CharField(
+		label="Password",
+		widget=forms.PasswordInput(attrs={
+			'class' : 'form-control',
+			'placeholder' : 'Password',
+		})
+	)
+	password2 = forms.CharField(
+		label="Retype Password",
+		widget=forms.PasswordInput(attrs={
+			'class' : 'form-control',
+			'placeholder' : 'Retype Password',
+		})
+	)
+	
 	class Meta:
 		model = User
 		fields = ("first_name", "last_name", "username", "email", "password1", "password2")
+		labels = {
+			'first_name' : _('First Name'),
+			'last_name' : _('Last Name'),
+			'username' : _('Username'),
+		}
+		widgets = {
+			'first_name' : forms.TextInput(attrs={
+				'class' : 'form-control',
+				'placeholder' : 'First Name',
+			}),
+			'last_name' : forms.TextInput(attrs={
+				'class' : 'form-control',
+				'placeholder' : 'Last Name',
+			}),
+			'username' : forms.TextInput(attrs={
+				'class' : 'form-control',
+				'placeholder' : 'Username',
+			}),
+
+		}
 
 	def save(self, commit=True):
 		user = super(NewUserForm, self).save(commit=False)
@@ -18,3 +62,6 @@ class NewUserForm(UserCreationForm):
 		if commit:
 			user.save()
 		return user
+
+class LoginForm(forms.Form):
+	pass

@@ -2,8 +2,8 @@
   <div class="container-fluid">
     <a class="navbar-brand" href="{% url "home" %}">Task Manager</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    {% if user.is_authenticated %}
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      {% if user.is_authenticated %}
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url "task-list" %} ">Task List</a>
@@ -12,12 +12,12 @@
           <a class="nav-link" href="{% url "task-create" %}">Create Task</a>
         </li>
       </ul>
-      {% endif %}
       <form class="d-flex p-1" role="search">
         <input style="width: 60%;" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
     </div>
+    {% endif %}
 
     {% if user.is_authenticated %}
       <span class="navbar-text">

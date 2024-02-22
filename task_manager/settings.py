@@ -53,6 +53,7 @@ EXTERNAL_APPS = [
     'drf_yasg',
     'tasks',
     'accounts_manager',
+    'guest_user',
 ]
 
 INSTALLED_APPS += EXTERNAL_APPS
@@ -166,8 +167,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
+    'guest_user.backends.GuestBackend',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://*.railway.app',
 ]
+
+LOGIN_URL = '/login/'
+
+LOGIN_REDIRECT_URL = '/'
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+SESSION_COOKIE_AGE = 1500
