@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
-
+from django.contrib.auth import password_validation
 
 # Create your forms here.
 
@@ -10,7 +10,7 @@ class NewUserForm(UserCreationForm):
 	
 	email = forms.EmailField(
 		required=True,
-		label="Email",
+		label="",
 		widget=forms.EmailInput(attrs={
 			'class' : 'form-control',
 			'placeholder' : 'Email',
@@ -18,28 +18,38 @@ class NewUserForm(UserCreationForm):
 		})
 	)
 	password1 = forms.CharField(
-		label="Password",
+		label="",
 		widget=forms.PasswordInput(attrs={
 			'class' : 'form-control',
 			'placeholder' : 'Password',
-		})
+		}),
+		help_text=password_validation.password_validators_help_text_html(),
 	)
 	password2 = forms.CharField(
-		label="Retype Password",
+		label="",
 		widget=forms.PasswordInput(attrs={
 			'class' : 'form-control',
 			'placeholder' : 'Retype Password',
+		})	
+	)
+	username = forms.CharField(
+		label="",
+		widget=forms.TextInput(attrs={
+			'class' : 'form-control',
+			'placeholder' : 'Username'
 		})
 	)
 	
 	class Meta:
+
 		model = User
 		fields = ("first_name", "last_name", "username", "email", "password1", "password2")
+		
 		labels = {
-			'first_name' : _('First Name'),
-			'last_name' : _('Last Name'),
-			'username' : _('Username'),
+			'first_name' : _(''),
+			'last_name' : _(''),
 		}
+
 		widgets = {
 			'first_name' : forms.TextInput(attrs={
 				'class' : 'form-control',
@@ -49,12 +59,8 @@ class NewUserForm(UserCreationForm):
 				'class' : 'form-control',
 				'placeholder' : 'Last Name',
 			}),
-			'username' : forms.TextInput(attrs={
-				'class' : 'form-control',
-				'placeholder' : 'Username',
-			}),
-
 		}
+		
 
 	def save(self, commit=True):
 		user = super(NewUserForm, self).save(commit=False)
