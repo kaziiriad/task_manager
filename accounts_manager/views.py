@@ -6,6 +6,9 @@ from .forms import NewUserForm
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView
+from guest_user.views import ConvertFormView
+from guest_user.mixins import AllowGuestUserMixin
+
 
 # def register_request(request):
 # 	if request.method == "POST":
@@ -24,7 +27,12 @@ class RegistrationView(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('login')
     success_message = "Registration successful."
     
+class MyConvertFormView(ConvertFormView):
 
+    # form_class = NewUserForm
+    template_name = "accounts/register.html"
+
+convert_form = MyConvertFormView.as_view()
 # def login_user(request):
 
 #     if request.method == 'POST':
@@ -43,8 +51,8 @@ class RegistrationView(SuccessMessageMixin, CreateView):
 
 #     return render(request, 'accounts/login.html')
 
-def logout_user(request):
+# def logout_user(request):
 
-    logout(request)
+#     logout(request)
 
-    return redirect('home')
+#     return redirect('home')

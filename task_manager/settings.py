@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
 from dotenv import load_dotenv
 import os
 
@@ -182,4 +181,18 @@ LOGOUT_REDIRECT_URL = '/'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-SESSION_COOKIE_AGE = 1500
+SESSION_COOKIE_AGE = 1800
+
+#guest session time - sec
+MAX_AGE = 900
+
+#convert form - guest to user
+CONVERT_FORM = 'accounts_manager.forms.NewUserForm'
+
+# converted users redirect here
+#CONVERT_REDIRECT_URL = '/'
+
+# guest name generator
+NAME_GENERATOR = 'guest_user.functions.generate_numbered_username'
+
+GUEST_USER_NAME_SUFFIX_DIGITS = 6

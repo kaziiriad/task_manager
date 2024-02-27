@@ -22,12 +22,12 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import CreateTaskForm, UpdateTaskForm
-
+from guest_user.mixins import AllowGuestUserMixin
 
 class HomeView(TemplateView):
     template_name = 'home.html'
 
-class TaskListView(LoginRequiredMixin, ListView):
+class TaskListView(AllowGuestUserMixin, LoginRequiredMixin, ListView):
 
     model = Task
     template_name = 'tasks/task_list.html'
@@ -39,7 +39,7 @@ class TaskListView(LoginRequiredMixin, ListView):
         return queryset
     
 
-class TaskCreateView(LoginRequiredMixin, CreateView):
+class TaskCreateView(LoginRequiredMixin, AllowGuestUserMixin, CreateView):
 
 
     model = Task
@@ -62,7 +62,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         )
     
 
-class TaskUpdateView(LoginRequiredMixin, UpdateView):
+class TaskUpdateView(LoginRequiredMixin, AllowGuestUserMixin, UpdateView):
     
     model = Task
     form_class = UpdateTaskForm
@@ -75,7 +75,7 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
         messages.success(self.request, 'Task updated successfully')
         return super(TaskUpdateView, self).form_valid(form)
 
-class TaskStatusUpdateView(LoginRequiredMixin, View):
+class TaskStatusUpdateView(LoginRequiredMixin, AllowGuestUserMixin, View):
 
     def post(self, request):
 
@@ -91,14 +91,14 @@ class TaskStatusUpdateView(LoginRequiredMixin, View):
     
 
 
-class TaskDetailView(LoginRequiredMixin, DetailView):
+class TaskDetailView(LoginRequiredMixin, AllowGuestUserMixin, DetailView):
     model = Task
     context_object_name = 'task'
     template_name = 'tasks/task_details.html'
     login_url = reverse_lazy('login')
     
 
-class TaskDeleteView(LoginRequiredMixin, DeleteView):
+class TaskDeleteView(LoginRequiredMixin, AllowGuestUserMixin, DeleteView):
     
     model = Task
     context_object_name = 'task'

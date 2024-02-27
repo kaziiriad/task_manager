@@ -60,7 +60,16 @@ class NewUserForm(UserCreationForm):
 				'placeholder' : 'Last Name',
 			}),
 		}
-		
+
+	def get_credentials(self):
+
+		return {
+			# 'first_name' : self.cleaned_data['first_name'],
+			# 'last_name' : self.cleaned_data['last_name'],
+			# 'email' : self.cleaned_data['email'],
+			'username' : self.cleaned_data['username'],
+			'password' : self.cleaned_data['password1']
+		}
 
 	def save(self, commit=True):
 		user = super(NewUserForm, self).save(commit=False)
